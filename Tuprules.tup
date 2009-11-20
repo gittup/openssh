@@ -5,5 +5,6 @@ CFLAGS += -Wsign-compare
 CFLAGS += -Wno-pointer-sign
 CFLAGS += -Wformat-security
 CFLAGS += -fno-builtin-memset
-CFLAGS += -fstack-protector-all
+# For some reason this makes ssh segfault when linking with my uClibc
+#CFLAGS += -fstack-protector-all
 CFLAGS += -std=gnu99
