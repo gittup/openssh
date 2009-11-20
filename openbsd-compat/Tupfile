@@ -1,0 +1,11 @@
+ifeq (@(OPENSSH),y)
+include_rules
+
+CFLAGS += -I.
+CFLAGS += -I..
+CFLAGS += -I$(GITTUP_ROOT)/openssl/include
+
+: foreach *.c |> !cc |> %B.o {objs}
+: {objs} |> !ar |> libopenbsd-compat.a
+
+endif

@@ -1,0 +1,9 @@
+CFLAGS += -Wall
+CFLAGS += -Wpointer-arith
+CFLAGS += -Wuninitialized
+CFLAGS += -Wsign-compare
+CFLAGS += -Wno-pointer-sign
+CFLAGS += -Wformat-security
+CFLAGS += -fno-builtin-memset
+CFLAGS += -fstack-protector-all
+CFLAGS += -std=gnu99

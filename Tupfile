@@ -1,0 +1,107 @@
+ifeq (@(OPENSSH),y)
+include_rules
+
+srcs += acss.c
+srcs += authfd.c
+srcs += authfile.c
+srcs += bufaux.c
+srcs += bufbn.c
+srcs += buffer.c
+srcs += canohost.c
+srcs += channels.c
+srcs += cipher.c
+srcs += cipher-acss.c
+srcs += cipher-aes.c
+srcs += cipher-bf1.c
+srcs += cipher-ctr.c
+srcs += cipher-3des1.c
+srcs += cleanup.c
+srcs += compat.c
+srcs += compress.c
+srcs += crc32.c
+srcs += deattack.c
+srcs += fatal.c
+srcs += hostfile.c
+srcs += log.c
+srcs += match.c
+srcs += md-sha256.c
+srcs += moduli.c
+srcs += nchan.c
+srcs += packet.c
+srcs += readpass.c
+srcs += rsa.c
+srcs += ttymodes.c
+srcs += xmalloc.c
+srcs += addrmatch.c
+srcs += atomicio.c
+srcs += key.c
+srcs += dispatch.c
+srcs += kex.c
+srcs += mac.c
+srcs += uidswap.c
+srcs += uuencode.c
+srcs += misc.c
+srcs += monitor_fdpass.c
+srcs += rijndael.c
+srcs += ssh-dss.c
+srcs += ssh-rsa.c
+srcs += dh.c
+srcs += kexdh.c
+srcs += kexgex.c
+srcs += kexdhc.c
+srcs += kexgexc.c
+srcs += scard.c
+srcs += msg.c
+srcs += progressmeter.c
+srcs += dns.c
+srcs += entropy.c
+srcs += scard-opensc.c
+srcs += gss-genr.c
+srcs += umac.c
+srcs += jpake.c
+srcs += schnorr.c
+
+CFLAGS += -DSSHDIR=\"/usr/etc\"
+CFLAGS += -D_PATH_SSH_PROGRAM=\"/bin/ssh\"
+CFLAGS += -D_PATH_SSH_ASKPASS_DEFAULT=\"/libexec/ssh-askpass\"
+CFLAGS += -D_PATH_SFTP_SERVER=\"/libexec/sftp-server\"
+CFLAGS += -D_PATH_SSH_KEY_SIGN=\"/libexec/ssh-keysign\"
+CFLAGS += -D_PATH_SSH_PIDDIR=\"/var/run\"
+CFLAGS += -D_PATH_PRIVSEP_CHROOT_DIR=\"/var/empty\"
+CFLAGS += -DSSH_RAND_HELPER=\"/libexec/ssh-rand-helper\"
+CFLAGS += -DHAVE_CONFIG_H
+CFLAGS += -I.
+CFLAGS += -I$(GITTUP_ROOT)/openssl/include
+CFLAGS += -I$(GITTUP_ROOT)/zlib
+
+: foreach $(srcs) |> !cc |> %B.o {objs}
+: {objs} |> !ar |> libssh.a
+
+ssh_srcs += ssh.c
+ssh_srcs += readconf.c
+ssh_srcs += clientloop.c
+ssh_srcs += sshtty.c
+ssh_srcs += sshconnect.c
+ssh_srcs += sshconnect1.c
+ssh_srcs += sshconnect2.c
+ssh_srcs += mux.c
+
+libs += libssh.a
+libs += openbsd-compat/libopenbsd-compat.a
+libs += $(GITTUP_ROOT)/openssl/libcrypto.a
+libs += $(GITTUP_ROOT)/zlib/libz.a
+
+# Stub for dlopen
+libs += $(GITTUP_ROOT)/glib/strdup.o
+
+: foreach $(ssh_srcs) |> !cc |> %B.o {ssh_objs}
+: {ssh_objs} $(libs) |> !ld |> ssh
+
+sftp_srcs += sftp.c
+sftp_srcs += sftp-client.c
+sftp_srcs += sftp-common.c
+sftp_srcs += sftp-glob.c
+: foreach $(sftp_srcs) |> !cc |> %B.o {sftp_objs}
+: {sftp_objs} $(libs) |> !ld |> sftp
+
+endif

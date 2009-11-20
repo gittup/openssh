@@ -1,0 +1,3 @@
+ifeq (@(OPENSSH),y)
+: foreach $(TUP_CWD)/ssh $(TUP_CWD)/sftp |> !cp |> %b
+endif

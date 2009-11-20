@@ -1,0 +1,16 @@
+config OPENSSH
+	bool "openssh"
+	select ZLIB
+	select OPENSSL
+	default n
+	help
+	  From http://www.openssh.com/ -
+
+	  OpenSSH is a FREE version of the SSH connectivity tools that
+	  technical users of the Internet rely on. Users of telnet, rlogin, and
+	  ftp may not realize that their password is transmitted across the
+	  Internet unencrypted, but it is. OpenSSH encrypts all traffic
+	  (including passwords) to effectively eliminate eavesdropping,
+	  connection hijacking, and other attacks. Additionally, OpenSSH
+	  provides secure tunneling capabilities and several authentication
+	  methods, and supports all SSH protocol versions. 
